@@ -18,7 +18,7 @@ public class Restaurante {
     private String nombre;
     @Column(nullable = false)
     private String especialidad;
-    @Column(nullable = false)// Ej: "Sushi", "Parrilla"
+    @Column(nullable = false)
     private Double calificacion;
     @OneToMany(mappedBy = "restaurante",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Plato> menu;

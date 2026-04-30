@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -17,15 +18,19 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id")
     private Restaurante restaurant;
-    @OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-
+    @Column(nullable = false)
+    private LocalDate fechaAlta;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ItemPedido> items;
+
     @Column(nullable = false)
     private Double total;
     @Enumerated(EnumType.STRING)
