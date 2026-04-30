@@ -26,5 +26,8 @@ public class Plato {
 
     private boolean disponible=true;
 
+    @ManyToOne
+    @JoinColumn(name = "restaurante_id")
+    private Restaurante restaurante;
     // Constructores, Getters y Setters
 }
