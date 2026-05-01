@@ -17,7 +17,7 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_restaurante")
     private Long idRestaurante;
-
+    
     @Column(nullable = false)
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
