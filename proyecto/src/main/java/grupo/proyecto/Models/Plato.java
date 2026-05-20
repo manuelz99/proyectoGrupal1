@@ -1,33 +1,45 @@
 package grupo.proyecto.Models;
 
+import grupo.proyecto.Enums.Etiquetas;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "platos")
 public class Plato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "El nombre del plato no puede ser nulo.")
     @Column(nullable = false)
     private String nombre;
+    @NotBlank(message = "La descripcion no puede ser nula.")
     @Column(nullable = false)
     private String descripcion;
+    @NotNull(message = "El precio no puede ser nulo")
     @Column(nullable = false)
-    private Double precio;
-    @ElementCollection(fetch = FetchType.EAGER) // Correcto para listas de tipos simples
-    @CollectionTable(name = "plato_etiquetas", joinColumns = @JoinColumn(name = "plato_id"))
-    @Column(name = "etiqueta")
-    private List<String> etiquetas; // Ej: "Keto", "Sin Azúcar", "Vegano"
+    private BigDecimal precio;
+    @Enumerated(EnumType.STRING)
+    @NotBlank(message = "El plato no puede estar sin etiquetas")
+    private Etiquetas etiquetas;
 
-    private boolean disponible=true;
+    @Column(nullable = false)
+    private boolean disponible;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
-    // Constructores, Getters y Setters
+    @OneToMany(mappedBy = "plato")
+    private List<ReseñaPlato> reseñas;
+
 }
