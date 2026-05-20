@@ -2,6 +2,7 @@ package grupo.proyecto.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import java.util.List;
@@ -28,16 +29,14 @@ public class Restaurante {
     private String especialidad;
 
     @Column(nullable = false)
-    private Double calificacion;
-
-    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Plato> menu;
 
-    // Todavia no se creo la entidad reseña
-    /*
+    @Column(nullable = false)
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reseña> reseñas;
-     */
+    private List<ReseñaRestaurant> reseñas;
 
+    @NotNull(message = "Debes indicar si tiene opciones saludables o no")
+    @Column(nullable = false)
     private boolean ofreceOpcionesSaludables;
 }

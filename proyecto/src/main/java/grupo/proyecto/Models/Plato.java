@@ -39,7 +39,7 @@ public class Plato {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
-    @OneToMany(mappedBy = "plato")
+    @OneToMany(mappedBy = "plato",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<ReseñaPlato> reseñas;
 
 }

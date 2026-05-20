@@ -1,5 +1,6 @@
 package grupo.proyecto.Models;
 
+import grupo.proyecto.Enums.Etiquetas;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -27,10 +28,10 @@ public class Usuario {
     @NotBlank(message = "La direccion no puede ser nula")
     @Column(nullable = false)
     private String direccion;
-    @ElementCollection
-    @CollectionTable(name = "usuario_preferencias", joinColumns = @JoinColumn(name = "usuario_id"))
-    @Column(name = "preferencia")
-    private List<String> preferenciasGustos;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Etiquetas preferencias;
 
 
     @OneToMany(mappedBy = "usuario",fetch = FetchType.LAZY)

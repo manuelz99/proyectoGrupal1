@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.action.internal.OrphanRemovalAction;
 
 @Entity
 @Table(name = "reseñas")
@@ -16,12 +17,15 @@ public class ReseñaRestaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReseña;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurante restaurante;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="usuario_id",nullable = false)
     private Usuario usuario;
+
+
     @Column(nullable = false)
     private String descripcion;
 
