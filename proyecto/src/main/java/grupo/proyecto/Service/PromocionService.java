@@ -12,8 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PromocionService {
     private final PromocionRepository promocionRepository;
-    private final
-    public List<Plato> armarPlatosEnPromo(Long idRestaurant){
+    private final RestaurantService restaurantService;
 
-    }
 }

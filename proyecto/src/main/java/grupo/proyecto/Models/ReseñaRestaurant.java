@@ -29,9 +29,9 @@ public class ReseñaRestaurant {
     @Column(nullable = false)
     private String descripcion;
 
-    @Min(0)
-    @Max(10)
-    @NotNull(message = "La calificacion no puede estar vacia")
+//    @Min(0)
+//    @Max(10)
+//    @NotNull(message = "La calificacion no puede estar vacia")
     @Column(nullable = false)
     private int calificacion;
 

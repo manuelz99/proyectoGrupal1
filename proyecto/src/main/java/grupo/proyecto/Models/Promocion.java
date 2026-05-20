@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,12 +27,13 @@ public class Promocion {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Column(nullable = false)
-    private List<Plato> platosEnPromocion;
+    private List<Plato> platosEnPromocion = new ArrayList<>();
+
     @NotNull(message = "El porcentaje a descontar es necesario para la operacion")
     @Column(nullable = false)
     private Double porcentajeDescuento; // Ej: 0.20 para un 20%
     @Column(nullable = false)
-    private BigDecimal precioFinal=calcularPrecioFinal(platosEnPromocion);
+    private BigDecimal precioFinal=BigDecimal.ZERO;
     @FutureOrPresent(message = "La fecha inicio debe ser actual o futura")
     @Column(nullable = false)
     private LocalDateTime fechaInicio;
@@ -41,12 +43,17 @@ public class Promocion {
     @NotNull(message = "Debes indicar si esta activa la promo")
     private boolean activa;
 
-    private BigDecimal calcularPrecioFinal(List<Plato> platosEnPromo){
+    private BigDecimal calcularPrecioFinal(){
        BigDecimal precioFinal = platosEnPromocion.
                 stream().
                 map(Plato::getPrecio).
                 reduce(BigDecimal.ZERO,BigDecimal::add);
        precioFinal=precioFinal.multiply(BigDecimal.valueOf(1-porcentajeDescuento));
         return precioFinal;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.precioFinal = calcularPrecioFinal();
     }
 }
