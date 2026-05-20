@@ -19,27 +19,31 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank(message = "El nombre no puede estar vacio")
+
     @Column(nullable = false)
     private String nombre;
-    @NotBlank(message = "El email no puede estar vacio")
+
     @Column(nullable = false, unique = true)
     private String email;
-    @NotBlank(message = "La direccion no puede ser nula")
+
+    @Column(nullable = false)
+    private String contrasenia;
+
     @Column(nullable = false)
     private String direccion;
 
+    @ElementCollection(targetClass = Etiquetas.class)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Etiquetas preferencias;
+    private List<Etiquetas> preferencias;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Restaurante> favoritos;
 
-    @OneToMany(mappedBy = "usuario",fetch = FetchType.LAZY)
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "usuario")
     private List<ReseñaPlato> reseñasPlato;
 
-    @OneToMany(mappedBy = "usuario",fetch = FetchType.LAZY)
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "usuario")
     private List<ReseñaRestaurant> reseñasRestaurantes;
 
 }
