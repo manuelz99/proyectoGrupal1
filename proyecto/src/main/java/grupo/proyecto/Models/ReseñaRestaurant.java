@@ -21,10 +21,10 @@ public class ReseñaRestaurant {
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurante restaurante;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="usuario_id",nullable = false)
     private Usuario usuario;
-
 
     @Column(nullable = false)
     private String descripcion;
@@ -34,7 +34,4 @@ public class ReseñaRestaurant {
 //    @NotNull(message = "La calificacion no puede estar vacia")
     @Column(nullable = false)
     private int calificacion;
-
-
-
 }
