@@ -11,6 +11,7 @@ import lombok.Data;
 @Table(name = "reseñas_platos")
 @Data
 public class ReseñaPlato {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,12 +19,15 @@ public class ReseñaPlato {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id",nullable = false)
     private Usuario usuario;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plato_id",nullable = false)
     private Plato plato;
+
     @NotBlank(message = "La descripcion no puede ser vacia.")
     @Column(nullable = false)
     private String descripcion;
+
     @Min(0)
     @Max(10)
     @NotNull(message = "La calificacion no puede ser nula")

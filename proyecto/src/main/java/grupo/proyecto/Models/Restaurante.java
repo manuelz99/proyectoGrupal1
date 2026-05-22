@@ -14,10 +14,10 @@ import java.util.List;
 @Setter
 @Table(name = "restaurantes")
 public class Restaurante {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_restaurante")
-    private Long idRestaurante;
+    private Long id;
 
     @NotBlank(message = "La direccion del restaurant no puede ser nula.")
     @Column(nullable = false)
@@ -42,5 +42,5 @@ public class Restaurante {
 
     @NotNull(message = "Debes indicar si tiene opciones saludables o no")
     @Column(nullable = false)
-    private boolean ofreceOpcionesSaludables;
+    private Boolean ofreceOpcionesSaludables;
 }
