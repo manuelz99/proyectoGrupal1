@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Table(name = "restaurantes")
 public class Restaurante {
 
@@ -32,11 +33,9 @@ public class Restaurante {
     @Size(min = 3, message = "La especialidad debe tener por lo menos 3 caracteres")
     private String especialidad;
 
-    @Column(nullable = false)
-    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Plato> menu;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Plato> menus;
 
-    @Column(nullable = false)
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReseñaRestaurant> reseñas;
 

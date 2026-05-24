@@ -24,14 +24,12 @@ public class RestauranteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crearRestaurante(dto));
     }
 
-    /*
     @GetMapping
     public ResponseEntity<List<RestauranteResponseDTO>> listar(@RequestParam(required = false) String nombre,
                                                                @RequestParam(required = false) String direccion) {
 
         return ResponseEntity.ok(service.listar(nombre, direccion));
     }
-     */
 
     @GetMapping("/{id}")
     public ResponseEntity<RestauranteResponseDTO> buscarPorId(@PathVariable Long id) {
