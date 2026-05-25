@@ -1,5 +1,6 @@
 package grupo.proyecto.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import grupo.proyecto.Enums.Etiquetas;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -38,6 +39,7 @@ public class Plato {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurante_id")
+    @JsonIgnore
     private Restaurante restaurante;
     @OneToMany(mappedBy = "plato",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<ReseñaPlato> reseñas;

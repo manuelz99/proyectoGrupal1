@@ -1,5 +1,6 @@
 package grupo.proyecto.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import grupo.proyecto.Enums.Etiquetas;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -38,9 +39,11 @@ public class Usuario {
     private List<Etiquetas> preferencias;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
     private List<ReseñaPlato> reseñasPlato;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
     private List<ReseñaRestaurant> reseñasRestaurantes;
 
 }

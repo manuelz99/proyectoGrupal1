@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restaurantes")
+@RequestMapping("/api/v1/restaurantes")
 @RequiredArgsConstructor
 public class RestauranteController {
 
-    private RestauranteService service;
+    private final RestauranteService service;
 
     @PostMapping
     public ResponseEntity<RestauranteResponseDTO> crear(@Valid @RequestBody RestauranteRequestDTO dto) {

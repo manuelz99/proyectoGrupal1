@@ -1,5 +1,6 @@
 package grupo.proyecto.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -22,6 +23,7 @@ public class ReseñaPlato {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plato_id",nullable = false)
+    @JsonIgnore
     private Plato plato;
 
     @NotBlank(message = "La descripcion no puede ser vacia.")
