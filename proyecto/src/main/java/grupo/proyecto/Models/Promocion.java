@@ -22,7 +22,7 @@ public class Promocion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @Column(nullable = false)
+    @JoinColumn(name = "restaurante_id")
     private Restaurante restaurante;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

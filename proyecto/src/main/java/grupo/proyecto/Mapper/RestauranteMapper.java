@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface RestauranteMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "menu", ignore = true)
+    @Mapping(target = "menus", ignore = true)
     @Mapping(target = "reseñas", ignore = true)
     Restaurante toEntity(RestauranteRequestDTO dto);
 

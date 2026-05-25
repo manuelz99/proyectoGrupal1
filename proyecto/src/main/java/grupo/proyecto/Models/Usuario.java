@@ -38,9 +38,6 @@ public class Usuario {
     private List<Etiquetas> preferencias;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Restaurante> favoritos;
-
-    @OneToMany(mappedBy = "usuario")
     private List<ReseñaPlato> reseñasPlato;
 
     @OneToMany(mappedBy = "usuario")
