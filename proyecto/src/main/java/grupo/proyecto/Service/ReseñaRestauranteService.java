@@ -35,17 +35,18 @@ public class ReseñaRestauranteService {
 
     public ReseñaRestaurtanteResponseDTO buscarPorId(Long id) {
 
-        ReseñaRestaurant reseñaRestaurant = repository.findById(id)
-                .orElseThrow(() -> new RecursoNotFoundException("Reseña no encontrada con ID: " + id));
-
+        ReseñaRestaurant reseñaRestaurant=devuelveReseña(id);
         return mapper.toDTO(reseñaRestaurant);
     }
 
     public void eliminar(Long id) {
 
-        ReseñaRestaurant reseñaRestaurant = repository.findById(id)
-                .orElseThrow(() -> new RecursoNotFoundException("Reseña no encontrada con ID: " + id));
-
+        ReseñaRestaurant reseñaRestaurant=devuelveReseña(id);
         repository.delete(reseñaRestaurant);
+    }
+    //METODOS PRIVADOS DE BUSQUEDA
+    private ReseñaRestaurant devuelveReseña(Long id){
+        return  repository.findById(id)
+                .orElseThrow(() -> new RecursoNotFoundException("Reseña no encontrada con ID: " + id));
     }
 }
