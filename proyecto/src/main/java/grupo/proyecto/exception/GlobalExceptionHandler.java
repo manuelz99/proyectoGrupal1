@@ -34,4 +34,11 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+    @ExceptionHandler(IdDuplicadoExc.class)
+    public ResponseEntity<ErrorResponseDTO> handleIdDuplicado(IdDuplicadoExc ex) {
+
+        ErrorResponseDTO response = new ErrorResponseDTO(LocalDateTime.now(), "El id ya existe en la BD");
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
 }
