@@ -46,4 +46,6 @@ public class ReseñaPlatoService {
                 .orElseThrow(() -> new RuntimeException("Reseña no encontrada con ID: " + id));
         respository.delete(reseñaPlato);
     }
+
+
 }
