@@ -23,12 +23,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.encontrarPorId(id));
     }
 
-    /*
+
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>> listar(){
         return ResponseEntity.ok(usuarioService.listar());
     }
-    */
+
 
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> encontrarPorId(@Valid @RequestBody CrearUsuarioRequestDTO dto){

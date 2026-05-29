@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -35,8 +36,9 @@ public class Usuario {
 
     @ElementCollection(targetClass = Etiquetas.class)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private List<Etiquetas> preferencias;
+    @CollectionTable(name = "usuario_preferencias", joinColumns = @JoinColumn(name = "usuario_id"))
+    @Column(name = "etiqueta", nullable = false)
+    private Set<Etiquetas> preferencias;
 
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
