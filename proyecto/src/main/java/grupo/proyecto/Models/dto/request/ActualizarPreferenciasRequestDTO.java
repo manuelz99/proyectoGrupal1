@@ -15,9 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ActualizarPreferenciasRequestDTO {
-    @NotNull(message = "El id tiene que ser ingresado")
-    private Long id;
-
     @NotEmpty(message = "Por lo menos una etiqueta debe ser ingresada")
     private List<@NotNull Etiquetas> etiquetas;
 }

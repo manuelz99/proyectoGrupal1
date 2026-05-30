@@ -1,10 +1,17 @@
 package grupo.proyecto.Mapper;
 
+import grupo.proyecto.Enums.Etiquetas;
 import grupo.proyecto.Models.Usuario;
+import grupo.proyecto.Models.dto.request.ActualizarPreferenciasRequestDTO;
 import grupo.proyecto.Models.dto.request.CrearUsuarioRequestDTO;
+import grupo.proyecto.Models.dto.response.PreferenciasResponseDTO;
 import grupo.proyecto.Models.dto.response.UsuarioResponseDTO;
+import jakarta.validation.constraints.NotNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
@@ -15,4 +22,8 @@ public interface UsuarioMapper {
     Usuario toEntity(CrearUsuarioRequestDTO dto);
 
     UsuarioResponseDTO toDTO(Usuario usuario);
+
+    Usuario toEntity(ActualizarPreferenciasRequestDTO dto);
+
+    PreferenciasResponseDTO toPreferenciasDTO(Set<Etiquetas> etiquetas);
 }
