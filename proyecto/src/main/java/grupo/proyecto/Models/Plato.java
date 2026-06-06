@@ -32,7 +32,7 @@ public class Plato {
     private BigDecimal precio;
     @Enumerated(EnumType.STRING)
     @NotBlank(message = "El plato no puede estar sin etiquetas")
-    private Etiquetas etiquetas;
+    private List<Etiquetas> etiquetas;
 
     @Column(nullable = false)
     private boolean disponible;

@@ -6,11 +6,15 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name = "reseñas_platos")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ReseñaPlato {
 
     @Id
@@ -34,5 +38,5 @@ public class ReseñaPlato {
     @Max(10)
     @NotNull(message = "La calificacion no puede ser nula")
     @Column(nullable = false)
-    private int calificacion;
+    private Integer calificacion;
 }
