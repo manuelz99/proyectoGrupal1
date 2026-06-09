@@ -9,6 +9,7 @@ import grupo.proyecto.Models.dto.response.UsuarioResponseDTO;
 import jakarta.validation.constraints.NotNull;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 import java.util.Set;
@@ -26,4 +27,11 @@ public interface UsuarioMapper {
     Usuario toEntity(ActualizarPreferenciasRequestDTO dto);
 
     PreferenciasResponseDTO toPreferenciasDTO(Set<Etiquetas> etiquetas);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "preferencias", ignore = true)
+    @Mapping(target = "reseñasPlato", ignore = true)
+    @Mapping(target = "reseñasRestaurantes", ignore = true)
+    void updateUsuarioFromDto(CrearUsuarioRequestDTO dto, @MappingTarget Usuario usuario);
+
 }

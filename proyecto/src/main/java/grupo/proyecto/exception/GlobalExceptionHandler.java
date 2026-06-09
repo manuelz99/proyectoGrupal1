@@ -41,5 +41,11 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
+    @ExceptionHandler(FavoritoYaExisteException.class)
+    public ResponseEntity<ErrorResponseDTO> handleFavoritoYaExistente(FavoritoYaExisteException ex) {
 
+        ErrorResponseDTO response = new ErrorResponseDTO(LocalDateTime.now(), "Conflicto");
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
 }

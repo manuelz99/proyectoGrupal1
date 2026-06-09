@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,4 +49,11 @@ public class Usuario {
     @JsonIgnore
     private List<ReseñaRestaurant> reseñasRestaurantes;
 
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_favoritos",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "restaurante_id")
+    )
+    private Set<Restaurante> favoritos = new HashSet<>();
 }

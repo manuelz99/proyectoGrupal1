@@ -1,12 +1,14 @@
 package grupo.proyecto.Service;
 
 import grupo.proyecto.Mapper.UsuarioMapper;
+import grupo.proyecto.Models.Restaurante;
 import grupo.proyecto.Models.Usuario;
 import grupo.proyecto.Models.dto.request.ActualizarPreferenciasRequestDTO;
 import grupo.proyecto.Models.dto.request.CrearUsuarioRequestDTO;
 import grupo.proyecto.Models.dto.response.PreferenciasResponseDTO;
 import grupo.proyecto.Models.dto.response.UsuarioResponseDTO;
 import grupo.proyecto.Repositorys.UsuarioRepository;
+import grupo.proyecto.exception.FavoritoYaExisteException;
 import grupo.proyecto.exception.RecursoNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private final RestauranteService restauranteService;
     private final UsuarioMapper usuarioMapper;
 
     @Transactional
@@ -65,5 +68,25 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
 
         return usuarioMapper.toPreferenciasDTO(usuario.getPreferencias());
+    }
+
+    @Transactional
+    public UsuarioResponseDTO actualizarPerfil(CrearUsuarioRequestDTO requestDTO, Long id){
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new RecursoNotFoundException("Usuario no encontrado"));
+
+        usuarioMapper.updateUsuarioFromDto(requestDTO, usuario);//con la implementacion de security esto seguramente cambie
+
+        return usuarioMapper.toDTO(usuario);
+    }
+
+    @Transactional
+    public void agregarFavoritos(Long usuarioId, Long restoId){
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RecursoNotFoundException("Usuario no encontrado"));
+        Restaurante restaurante = /*restauranteService.buscarEntidadPorId(restoId)*/new Restaurante();
+        //Necesito metodo en restaurante que devuelva un restaurante en cambio de un responseDTO
+
+        if(!usuario.getFavoritos().add(restaurante)) {
+            throw new FavoritoYaExisteException("El restaurante ya existe en la lista de favoritos");
+        }
     }
 }

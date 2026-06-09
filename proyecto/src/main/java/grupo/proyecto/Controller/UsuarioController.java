@@ -46,4 +46,9 @@ public class UsuarioController {
     public ResponseEntity<PreferenciasResponseDTO> eliminarPreferencias(@Valid @RequestBody ActualizarPreferenciasRequestDTO dto, @PathVariable Long id){
         return ResponseEntity.ok(usuarioService.eliminarPreferencias(dto, id));
     }
+
+    @PutMapping("/{id}/")
+    public ResponseEntity<UsuarioResponseDTO> actualizarPerfil(@Valid @RequestBody CrearUsuarioRequestDTO dto, @PathVariable Long id){
+        return ResponseEntity.ok(usuarioService.actualizarPerfil(dto, id));
+    }
 }
