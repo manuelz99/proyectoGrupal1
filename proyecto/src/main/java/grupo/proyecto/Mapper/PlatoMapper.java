@@ -15,5 +15,6 @@ public interface PlatoMapper {
     @Mapping(target = "restaurante", ignore = true)
     Plato toEntity(PlatoRequestDTO platoRequestDTO);
 
+    @Mapping(source = "restaurante.nombre", target = "nombreRestaurant")
     PlatoResponseDTO toDTO(Plato plato);
 }

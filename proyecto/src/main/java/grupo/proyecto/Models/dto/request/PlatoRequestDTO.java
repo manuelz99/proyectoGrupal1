@@ -17,7 +17,7 @@ public record PlatoRequestDTO(
                 @Positive(message = "El ID del restaurant debe ser positivo")
         Long idRestaurante,
         @NotBlank(message = "El nombre del plato no puede estar vacio")
-        String nombre_plato,
+        String nombre,
         @NotBlank(message = "La descripcion es obligatoria")
         String descripcion,
         @NotNull(message = "El precio es obligatorio")

@@ -13,5 +13,5 @@ public class RestauranteResponseDTO {
     private String direccion;
     private String nombre;
     private String especialidad;
-    private Boolean ofereceOpcionesSaludables;
+    private Boolean ofreceOpcionesSaludables;
 }

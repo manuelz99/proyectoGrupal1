@@ -19,5 +19,5 @@ public class RestauranteRequestDTO {
     private String especialidad;
 
     @NotNull(message = "Debes indicar si tiene opciones saludables o no")
-    private Boolean ofreceOpcionesDisponibles;
+    private Boolean ofreceOpcionesSaludables;
 }
