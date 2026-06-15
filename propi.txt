@@ -1,0 +1,15 @@
+spring.application.name=proyecto
+
+# Conexión a tu base de datos Neon
+spring.datasource.url=jdbc:postgresql://ep-green-frog-acdkkirm-pooler.sa-east-1.aws.neon.tech:5432/neondb?sslmode=require&channel_binding=require
+spring.datasource.username=neondb_owner
+spring.datasource.password=npg_kxF5p6bXdJhq
+
+# Configuración adicional necesaria para JPA/Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.web.error.include-stacktrace=always
+logging.level.org.springdoc=DEBUG
+logging.level.org.hibernate=DEBUG
+logging.level.org.springframework.web=DEBUG
+spring.jackson.deserialization.fail-on-unknown-propertie
