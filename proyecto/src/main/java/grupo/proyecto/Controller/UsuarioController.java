@@ -33,7 +33,7 @@ public class UsuarioController {
 
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> encontrarPorId(@Valid @RequestBody CrearUsuarioRequestDTO dto){
+    public ResponseEntity<UsuarioResponseDTO> crear(@Valid @RequestBody CrearUsuarioRequestDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crearUsuario(dto));
     }
 
@@ -52,12 +52,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.actualizarPerfil(dto, id));
     }
 
-    @PatchMapping("/{usuarioId}/favoritos/{restauranteId}")
+    @PatchMapping("/{usuarioId}/favoritos/agregar/{restauranteId}")
     public ResponseEntity<Void> agregarFavorito(@PathVariable Long usuarioId, @PathVariable Long restauranteId) {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{usuarioId}/favoritos/{restauranteId}")
+    @PatchMapping("/{usuarioId}/favoritos/eliminar/{restauranteId}")
     public ResponseEntity<Void> eliminarFavorito(@PathVariable Long usuarioId, @PathVariable Long restauranteId) {
         return ResponseEntity.ok().build();
     }

@@ -49,7 +49,7 @@ public class Usuario {
     @JsonIgnore
     private List<ReseñaRestaurant> reseñasRestaurantes;
 
-    @ManyToMany
+    @ManyToMany //no va a ser utilizado actualmente
     @JoinTable(
             name = "usuario_favoritos",
             joinColumns = @JoinColumn(name = "usuario_id"),
