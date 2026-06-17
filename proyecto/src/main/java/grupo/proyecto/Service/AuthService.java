@@ -3,8 +3,8 @@ package grupo.proyecto.Service;
 import grupo.proyecto.Enums.Roles;
 import grupo.proyecto.Models.CredentialsEntity;
 import grupo.proyecto.Models.RoleEntity;
-import grupo.proyecto.Models.dto.AuthDTO;
-import grupo.proyecto.Models.dto.AuthDTO.*;
+import grupo.proyecto.Models.dto.request.RegisterRequestDTO;
+import grupo.proyecto.Models.dto.response.AuthResponseDTO;
 import grupo.proyecto.Repositorys.CredentialsRepository;
 import grupo.proyecto.Repositorys.RoleRepository;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class AuthService {
 
     // ── Login ─────────────────────────────────────────────────────────────────
 
-    public AuthDTO.AuthResponse authenticate(String email, String password) {
+    public AuthResponseDTO authenticate(String email, String password) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password)
@@ -46,25 +46,21 @@ public class AuthService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         String accessToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
 
-        user.setRefreshToken(refreshToken);
-        credentialsRepository.save(user);
-
-        return new AuthDTO.AuthResponse(accessToken, refreshToken);
+        return new AuthResponseDTO(accessToken);
     }
 
     // ── Registro ──────────────────────────────────────────────────────────────
 
     @Transactional
-    public AuthResponse register(RegisterRequest input) {
-        if (credentialsRepository.existsByEmail(input.email())) {
+    public AuthResponseDTO register(RegisterRequestDTO input) {
+        if (credentialsRepository.existsByEmail(input.getEmail())) {
             throw new IllegalArgumentException("El email ya está registrado");
         }
 
         CredentialsEntity credentials = new CredentialsEntity(
-                input.email(),
-                passwordEncoder.encode(input.password())
+                input.getEmail(),
+                passwordEncoder.encode(input.getPassword())
         );
 
         // Asignamos rol USER por defecto
@@ -73,39 +69,10 @@ public class AuthService {
                         "Rol ROLE_USER no encontrado. Ejecutá el DataInitializer."));
         credentials.addRole(userRole);
 
-        String refreshToken = jwtService.generateRefreshToken(credentials);
-        credentials.setRefreshToken(refreshToken);
-
         credentialsRepository.save(credentials);
 
         String accessToken = jwtService.generateToken(credentials);
-        return new AuthResponse(accessToken, refreshToken);
+        return new AuthResponseDTO(accessToken);
     }
 
-    // ── Refresh Token ─────────────────────────────────────────────────────────
-
-    @Transactional
-    public AuthResponse refreshAccessToken(String refreshToken) {
-        String username = jwtService.extractUsername(refreshToken);
-
-        CredentialsEntity user = credentialsRepository.findByEmail(username)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
-        // Verificamos que el refresh token coincida con el almacenado
-        if (!user.getRefreshToken().equals(refreshToken)) {
-            throw new IllegalArgumentException("Refresh token no coincide");
-        }
-
-        if (!jwtService.validateRefreshToken(refreshToken, user)) {
-            throw new IllegalArgumentException("Refresh token expirado o inválido");
-        }
-
-        String newAccessToken  = jwtService.generateToken(user);
-        String newRefreshToken = jwtService.generateRefreshToken(user);
-
-        user.setRefreshToken(newRefreshToken);
-        credentialsRepository.save(user);
-
-        return new AuthResponse(newAccessToken, newRefreshToken);
-    }
 }

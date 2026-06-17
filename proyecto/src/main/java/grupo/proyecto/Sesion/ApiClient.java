@@ -10,10 +10,9 @@ public class ApiClient {
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    // 🔐 LOGIN (JWT)
+    // 🔑 LOGIN (JWT)
     public static String login(String email, String password) throws Exception {
 
-        // 👉 ahora coincide con LoginRequestDTO del backend
         String body = """
         {
             "email": "%s",
@@ -34,14 +33,12 @@ public class ApiClient {
             throw new RuntimeException("Error login: " + response.body());
         }
 
-        // 📦 parseo JSON
+        // 📦 parseo JSON (SOLO Access Token)
         var json = mapper.readTree(response.body());
-
         String access = json.get("accessToken").asText();
-        String refresh = json.get("refreshToken").asText();
 
-        // 💾 guardamos tokens en sesión
-        SessionManager.setTokens(access, refresh);
+        // 💾 guardamos token en sesión
+        SessionManager.setToken(access);
 
         return access;
     }

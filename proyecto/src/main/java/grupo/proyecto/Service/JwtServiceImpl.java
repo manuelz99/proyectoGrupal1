@@ -21,9 +21,6 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
 
-    @Value("${jwt.refresh-expiration}")
-    private Long refreshTokenExpiration;
-
     @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -50,13 +47,6 @@ public class JwtServiceImpl implements JwtService {
         return buildToken(claims, userDetails, jwtExpiration);
     }
 
-    @Override
-    public String generateRefreshToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("type", "refresh");
-        return buildToken(claims, userDetails, refreshTokenExpiration);
-    }
-
     private String buildToken(Map<String, Object> extraClaims,
                               UserDetails userDetails,
                               long expiration) {
@@ -77,21 +67,6 @@ public class JwtServiceImpl implements JwtService {
                 && !isTokenExpired(token)
                 && userDetails.isAccountNonLocked()
                 && userDetails.isEnabled();
-    }
-
-    @Override
-    public boolean validateRefreshToken(String refreshToken, UserDetails userDetails) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getSignInKey())
-                    .build()
-                    .parseClaimsJws(refreshToken);
-            final String username = extractUsername(refreshToken);
-            return username.equals(userDetails.getUsername())
-                    && !isTokenExpired(refreshToken);
-        } catch (JwtException e) {
-            return false;
-        }
     }
 
     private boolean isTokenExpired(String token) {

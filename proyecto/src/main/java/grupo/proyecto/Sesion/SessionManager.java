@@ -3,23 +3,16 @@ package grupo.proyecto.Sesion;
 public class SessionManager {
 
     private static String accessToken;
-    private static String refreshToken;
 
-    public static void setTokens(String access, String refresh) {
+    public static void setToken(String access) {
         accessToken = access;
-        refreshToken = refresh;
     }
 
     public static String getAccessToken() {
         return accessToken;
     }
 
-    public static String getRefreshToken() {
-        return refreshToken;
-    }
-
     public static void clear() {
         accessToken = null;
-        refreshToken = null;
     }
 }

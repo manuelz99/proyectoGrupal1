@@ -29,7 +29,7 @@ public class PlatoService {
     // =========================
     public PlatoResponseDTO crearPlato(PlatoRequestDTO dto) {
 
-        Restaurante restaurante = validarRestaurante(dto.idRestaurante());
+        Restaurante restaurante = validarRestaurante(dto.getIdRestaurante());
 
         Plato plato = platoMapper.toEntity(dto);
 

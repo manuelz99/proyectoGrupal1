@@ -47,11 +47,11 @@ public class RestaurantePerfilView {
 
                 platos.forEach(p ->
                         listPlatos.getItems().add(
-                                p.nombre() +
-                                        " - $" + p.precio() +
-                                        " - " + p.descripcion() +
-                                        " - " + p.etiquetas() + //Esto hay que cargar los datos
-                                        (p.disponible() ? " ✔" : " ❌")
+                                p.getNombre() +
+                                        " - $" + p.getPrecio() +
+                                        " - " + p.getDescripcion() +
+                                        " - " + p.getEtiquetas() + //Esto hay que cargar los datos
+                                        (p.isDisponible() ? " ✔" : " ❌")
                         )
                 );
 

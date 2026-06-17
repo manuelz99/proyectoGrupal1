@@ -1,14 +1,20 @@
 package grupo.proyecto.Service;
 
+import grupo.proyecto.Enums.Roles;
 import grupo.proyecto.Mapper.RestauranteMapper;
+import grupo.proyecto.Models.CredentialsEntity;
 import grupo.proyecto.Models.Restaurante;
+import grupo.proyecto.Models.RoleEntity;
 import grupo.proyecto.Models.dto.request.RestauranteCercanoRequestDTO;
 import grupo.proyecto.Models.dto.request.RestauranteRequestDTO;
 import grupo.proyecto.Models.dto.request.RestauranteUpdateDTO;
 import grupo.proyecto.Models.dto.response.RestauranteResponseDTO;
+import grupo.proyecto.Repositorys.CredentialsRepository;
 import grupo.proyecto.Repositorys.RestauranteRepository;
+import grupo.proyecto.Repositorys.RoleRepository;
 import grupo.proyecto.exception.RecursoNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +26,9 @@ public class RestauranteService {
     private final RestauranteRepository repository;
     private final RestauranteMapper mapper;
     private final GeocodingService geocodingService;
+    private final CredentialsRepository credentialsRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // =========================
     // CREAR
@@ -28,13 +37,26 @@ public class RestauranteService {
 
         Restaurante restaurante = mapper.toEntity(dto);
 
-        Double[] coordenadas =
-                geocodingService.obtenerCoordenadas(dto.getDireccion());
-
+        Double[] coordenadas = geocodingService.obtenerCoordenadas(dto.getDireccion());
         restaurante.setLatitud(coordenadas[0]);
         restaurante.setLongitud(coordenadas[1]);
 
+        restaurante.setPassword(passwordEncoder.encode(dto.getPassword()));
+
         Restaurante saved = repository.save(restaurante);
+
+        // 2. Crear las credenciales para Spring Security
+        CredentialsEntity credentials = new CredentialsEntity();
+        credentials.setEmail(dto.getEmail());
+        credentials.setPassword(restaurante.getPassword());
+        credentials.setRestaurante(saved);
+
+        // 3. Asignar el rol
+        RoleEntity roleResto = roleRepository.findByRole(Roles.ROLE_RESTAURANTE)
+                .orElseThrow(() -> new RuntimeException("ROLE_RESTAURANTE no existe"));
+
+        credentials.addRole(roleResto);
+        credentialsRepository.save(credentials);
 
         return mapper.toDTO(saved);
     }
@@ -206,22 +228,4 @@ public class RestauranteService {
                 .map(mapper::toDTO)
                 .toList();
     }
-
-    // =========================
-    // LOGIN (⚠️ mejorable)
-    // =========================
-    public RestauranteResponseDTO login(String email, String password) {
-
-        Restaurante r = repository.findByEmail(email)
-                .orElseThrow(() ->
-                        new RecursoNotFoundException("Restaurante no existe"));
-
-        if (!r.getPassword().equals(password)) {
-            throw new RuntimeException("Password incorrecta");
-        }
-
-        return mapper.toDTO(r);
-    }
-
-
 }

@@ -65,8 +65,16 @@ public class DataInitializer implements CommandLineRunner {
         // Permisos para ROLE_ADMIN (todos)
         List<Permits> adminPermits = Arrays.asList(Permits.values());
 
+        // Permisos para ROLE_RESTAURANTE
+        List<Permits> restoPermits = List.of(
+                Permits.VER_RESTAURANTES,
+                Permits.ACTUALIZAR_RESTAURANTE,
+                Permits.CREAR_RESTAURANTE
+        );
+
         createRoleIfNotExists(Roles.ROLE_USER, userPermits);
         createRoleIfNotExists(Roles.ROLE_ADMIN, adminPermits);
+        createRoleIfNotExists(Roles.ROLE_RESTAURANTE, restoPermits);
     }
 
     private void createRoleIfNotExists(Roles roleEnum, List<Permits> permitList) {

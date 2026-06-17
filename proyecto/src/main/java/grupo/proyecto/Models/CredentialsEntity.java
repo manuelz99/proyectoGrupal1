@@ -37,6 +37,10 @@ public class CredentialsEntity implements UserDetails {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", unique = true)
     private Usuario usuario;
 
+    @OneToOne
+    @JoinColumn(name = "restaurante_id", referencedColumnName = "id", unique = true)
+    private Restaurante restaurante;
+
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "credentials_roles",
@@ -74,4 +78,7 @@ public class CredentialsEntity implements UserDetails {
 
     public Set<RoleEntity> getRoles() { return roles; }
     public void addRole(RoleEntity role) { this.roles.add(role); }
+
+    public Restaurante getRestaurante() { return restaurante; }
+    public void setRestaurante(Restaurante restaurante) { this.restaurante = restaurante; }
 }

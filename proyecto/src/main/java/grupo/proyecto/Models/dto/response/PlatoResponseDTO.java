@@ -5,18 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.List;
 
-public record PlatoResponseDTO(
-        Long id,
-        String nombreRestaurant,
-        String nombre,
-        String descripcion,
-        BigDecimal precio,
-        List<Etiquetas> etiquetas,
-        boolean disponible
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PlatoResponseDTO {
 
-) {
+    private Long id;
+    private String nombreRestaurant;
+    private String nombre;
+    private String descripcion;
+    private BigDecimal precio;
+    private List<Etiquetas> etiquetas;
+    private boolean disponible;
 }

@@ -86,15 +86,4 @@ public class RestauranteController {
                 service.buscarCercanos(dto)
         );
     }
-    @PostMapping("/login")
-    public ResponseEntity<RestauranteResponseDTO> login(
-            @RequestBody LoginRequestDTO dto
-    ) {
-        RestauranteResponseDTO restaurante = service.login(
-                dto.getEmail(),
-                dto.getPassword()
-        );
-
-        return ResponseEntity.ok(restaurante);
-    }
 }

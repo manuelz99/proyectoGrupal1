@@ -67,12 +67,12 @@ public class RestauranteView {
                         } else {
 
                             setText(
-                                    plato.nombre()
+                                    plato.getNombre()
                                             + " - $"
-                                            + plato.precio()
+                                            + plato.getPrecio()
                                             + " - "
                                             + (
-                                            plato.disponible()
+                                            plato.isDisponible()
                                                     ? "Disponible"
                                                     : "No disponible"
                                     )
@@ -318,29 +318,12 @@ public class RestauranteView {
                 "Modificar Plato"
         );
 
-        TextField txtNombre =
-                new TextField(
-                        plato.nombre()
-                );
+        TextField txtNombre = new TextField(plato.getNombre());
+        TextField txtDescripcion = new TextField(plato.getDescripcion());
+        TextField txtPrecio = new TextField(plato.getPrecio().toString());
 
-        TextField txtDescripcion =
-                new TextField(
-                        plato.descripcion()
-                );
-
-        TextField txtPrecio =
-                new TextField(
-                        plato.precio().toString()
-                );
-
-        CheckBox cbDisponible =
-                new CheckBox(
-                        "Disponible"
-                );
-
-        cbDisponible.setSelected(
-                plato.disponible()
-        );
+        CheckBox cbDisponible = new CheckBox("Disponible");
+        cbDisponible.setSelected(plato.isDisponible());
 
         VBox etiquetasBox =
                 new VBox(5);
@@ -355,10 +338,7 @@ public class RestauranteView {
                             etiqueta.name()
                     );
 
-            cb.setSelected(
-                    plato.etiquetas()
-                            .contains(etiqueta)
-            );
+            cb.setSelected(plato.getEtiquetas().contains(etiqueta));
 
             checks.put(
                     etiqueta,
@@ -445,10 +425,7 @@ public class RestauranteView {
                 PlatoClient client =
                         new PlatoClient();
 
-                client.modificarPlato(
-                        plato.id(),
-                        dto
-                );
+                client.modificarPlato(plato.getId(), dto);
 
                 cargarPlatos();
 
@@ -498,11 +475,7 @@ public class RestauranteView {
                 "Eliminar plato"
         );
 
-        confirmacion.setHeaderText(
-                "¿Eliminar " +
-                        plato.nombre() +
-                        "?"
-        );
+        confirmacion.setHeaderText("¿Eliminar " + plato.getNombre() + "?");
 
         if (confirmacion.showAndWait()
                 .orElse(ButtonType.CANCEL)
@@ -516,9 +489,7 @@ public class RestauranteView {
             PlatoClient client =
                     new PlatoClient();
 
-            client.eliminarPlato(
-                    plato.id()
-            );
+            client.eliminarPlato(plato.getId());
 
             cargarPlatos();
 
@@ -748,16 +719,13 @@ public class RestauranteView {
         }
     }
 
-    private String formatearPlato(
-            PlatoResponseDTO p
-    ) {
-
-        return p.nombre()
+    private String formatearPlato(PlatoResponseDTO p) {
+        return p.getNombre()
                 + " - $"
-                + p.precio()
+                + p.getPrecio()
                 + " - "
                 + (
-                p.disponible()
+                p.isDisponible()
                         ? "Disponible"
                         : "No disponible"
         );
