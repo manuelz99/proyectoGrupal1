@@ -1,0 +1,17 @@
+spring.application.name=proyecto
+
+spring.datasource.url=jdbc:postgresql://ep-green-frog-acdkkirm-pooler.sa-east-1.aws.neon.tech:5432/neondb?sslmode=require&channel_binding=require
+spring.datasource.username=neondb_owner
+spring.datasource.password=npg_kxF5p6bXdJhq
+
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jackson.deserialization.fail-on-unknown-properties=false
+
+logging.level.org.hibernate=INFO
+logging.level.org.springframework=INFO
+
+jwt.secret=9f8d7c6b5a4321ff99aa88bb77cc66dd55ee44ff33aa22bb11cc00dd
+jwt.expiration=3600000
+jwt.refresh-expiration=604800000
