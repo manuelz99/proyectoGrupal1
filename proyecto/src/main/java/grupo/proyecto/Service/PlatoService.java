@@ -10,7 +10,9 @@ import grupo.proyecto.Models.dto.response.PlatoResponseDTO;
 import grupo.proyecto.Repositorys.PlatoRepository;
 import grupo.proyecto.Repositorys.RestauranteRepository;
 import grupo.proyecto.exception.RecursoNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,9 +29,10 @@ public class PlatoService {
     // =========================
     // CREAR PLATO
     // =========================
-    public PlatoResponseDTO crearPlato(PlatoRequestDTO dto) {
+    @Transactional
+    public PlatoResponseDTO crearPlato(PlatoRequestDTO dto, Long id) {
 
-        Restaurante restaurante = validarRestaurante(dto.getIdRestaurante());
+        Restaurante restaurante = validarRestaurante(id);
 
         Plato plato = platoMapper.toEntity(dto);
 
@@ -43,18 +46,29 @@ public class PlatoService {
     // =========================
     // ELIMINAR PLATO
     // =========================
-    public void eliminar_plato(Long id) {
+    @Transactional
+    public void eliminar_plato(Long restoId, Long platoId) {
 
-        Plato plato = validarPlato(id);
+        Plato plato = validarPlato(platoId);
+
+        if (!plato.getRestaurante().getId().equals(restoId)) {
+            throw new AccessDeniedException("El plato no pertenece a este restaurante");
+        }
+
         platoRepository.delete(plato);
     }
 
     // =========================
     // MODIFICAR PLATO
     // =========================
-    public PlatoResponseDTO modificarPlato(Long id, PlatoUpdateDTO dto) {
+    @Transactional
+    public PlatoResponseDTO modificarPlato(Long restoId, Long platoId, PlatoUpdateDTO dto) {
 
-        Plato plato = validarPlato(id);
+        Plato plato = validarPlato(platoId);
+
+        if (!plato.getRestaurante().getId().equals(restoId)) {
+            throw new AccessDeniedException("El plato no pertenece a este restaurante");
+        }
 
         plato.setNombre(dto.getNombre());
         plato.setDescripcion(dto.getDescripcion());
@@ -127,6 +141,7 @@ public class PlatoService {
     // =========================
     // CAMBIAR ESTADO (DISPONIBLE / NO DISPONIBLE)
     // =========================
+    @Transactional
     public String cambiaEstadoDePlato(Long idPlato) {
 
         Plato plato = validarPlato(idPlato);

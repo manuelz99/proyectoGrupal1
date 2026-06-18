@@ -8,6 +8,7 @@ import grupo.proyecto.Models.dto.request.ReseñaRestauranteRequestDTO;
 import grupo.proyecto.Models.dto.response.ReseñaRestaurtanteResponseDTO;
 import grupo.proyecto.Repositorys.ReseñaRestaurantRepository;
 import grupo.proyecto.exception.RecursoNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class ReseñaRestauranteService {
     // =========================
     // CREAR
     // =========================
+    @Transactional
     public ReseñaRestaurtanteResponseDTO crear(ReseñaRestauranteRequestDTO dto) {
 
         Restaurante restaurante = restauranteService.buscarEntidadPorId(dto.getRestauranteId());

@@ -13,6 +13,7 @@ import grupo.proyecto.Repositorys.CredentialsRepository;
 import grupo.proyecto.Repositorys.RestauranteRepository;
 import grupo.proyecto.Repositorys.RoleRepository;
 import grupo.proyecto.exception.RecursoNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class RestauranteService {
     // =========================
     // CREAR
     // =========================
+    @Transactional
     public RestauranteResponseDTO crearRestaurante(RestauranteRequestDTO dto) {
 
         Restaurante restaurante = mapper.toEntity(dto);
@@ -144,6 +146,7 @@ public class RestauranteService {
     // =========================
     // MODIFICAR
     // =========================
+    @Transactional
     public RestauranteResponseDTO modificarRestaurante(
             Long id,
             RestauranteUpdateDTO dto

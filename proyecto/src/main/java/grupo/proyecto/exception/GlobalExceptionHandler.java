@@ -3,6 +3,7 @@ package grupo.proyecto.exception;
 import grupo.proyecto.Models.dto.response.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,6 +43,13 @@ public class GlobalExceptionHandler {
         ErrorResponseDTO response = new ErrorResponseDTO(LocalDateTime.now(), "El id ya existe en la BD");
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> manejarAccessDenied(AccessDeniedException ex) {
+
+        ErrorResponseDTO response = new ErrorResponseDTO(LocalDateTime.now(), "No tiene permisos para realizar esta acción");
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {

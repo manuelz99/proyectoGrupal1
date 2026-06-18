@@ -69,19 +69,56 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 "/auth/**",
-                                "/api/v1/usuarios/**",
-                                "/api/v1/restaurantes/**",
-                                "/api/v1/platos/**",
-                                "/api/v1/reseñas-restaurantes/**",
-                                "/api/v1/reseñas-platos/**",
                                 "/api/v1/geocoding/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
-                        ).permitAll()
+                        ).permitAll() //estos endpoints no requieren autenticacion
 
+                        //Restricciones a restauranteController
 
-                        .requestMatchers(HttpMethod.DELETE, "/api/restaurantes/**")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/restaurantes/**")
+                        .permitAll() //estos endpoints no requieren autenticacion
+
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/restaurantes/**")
                         .hasAuthority("ROLE_ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/restaurantes/**")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_RESTAURANTE")
+
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/restaurantes/platos/{id}")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_RESTAURANTE")
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/restaurantes/{id}/platos")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_RESTAURANTE")
+
+                        //falta restringir endpoints de "/cercanos" y "crear", porque no se que aplicar
+
+                        //Restricciones a usuarioController
+
+                        .requestMatchers(
+                                "/api/v1/usuarios/{id}", "/api/v1/usuarios/email/{email}")
+                        .hasAuthority("ROLE_ADMIN")
+
+                        .requestMatchers("/api/v1/usuarios/{id}/preferencias/**")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/usuarios/{id}")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+
+                        //Restricciones a Reseñas
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/reseñas-platos/**")
+                        .permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/reseñas-platos")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/reseñas-restaurantes/**")
+                        .permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/reseñas-restaurantes")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+
 
                         // 🔐 TODO LO DEMÁS
                         .anyRequest().authenticated()
@@ -92,3 +129,9 @@ public class SecurityConfig {
         return http.build();
     }
 }
+//
+//                                "/api/v1/usuarios/**",
+//                                        "/api/v1/restaurantes/**",
+//                                        "/api/v1/platos/**",
+//                                        "/api/v1/reseñas-restaurantes/**",
+//                                        "/api/v1/reseñas-platos/**",

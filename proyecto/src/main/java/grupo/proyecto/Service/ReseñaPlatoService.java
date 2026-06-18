@@ -6,6 +6,7 @@ import grupo.proyecto.Models.dto.request.ReseñaPlatoRequestDTO;
 import grupo.proyecto.Models.dto.response.ReseñaPlatoResponseDTO;
 import grupo.proyecto.Repositorys.ReseñaPlatoRespository;
 import grupo.proyecto.exception.RecursoNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ReseñaPlatoService {
     private final ReseñaPlatoRespository respository;
     private final ReseñaPlatoMapper mapper;
 
+    @Transactional
     public ReseñaPlatoResponseDTO crear(ReseñaPlatoRequestDTO dto) {
 
         ReseñaPlato reseñaPlato = mapper.toEntity(dto);
