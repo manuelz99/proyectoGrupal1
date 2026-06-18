@@ -68,7 +68,8 @@ public class SecurityConfig {
 
 
                         .requestMatchers(
-                                        "/auth/**",
+                                        "/auth/login",
+                                        "/auth/register", // Mantenemos público el registro y el login
                                         "/api/v1/usuarios", "/api/v1/usuarios/**",
                                         "/api/v1/restaurantes", "/api/v1/restaurantes/**",
                                         "/api/v1/platos", "/api/v1/platos/**",
