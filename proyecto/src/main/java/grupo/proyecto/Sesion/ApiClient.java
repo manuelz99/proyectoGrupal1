@@ -67,4 +67,15 @@ public class ApiClient {
 
         return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
+
+    // 🔍 BUSCAR INFO DEL USUARIO LOGUEADO
+    public static Long fetchLoggedInId() throws Exception {
+        HttpResponse<String> response = get("/auth/me");
+
+        var json = mapper.readTree(response.body());
+        Long id = json.get("id").asLong();
+
+        SessionManager.setLoggedInId(id); // Lo guardamos en sesión
+        return id;
+    }
 }

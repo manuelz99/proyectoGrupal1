@@ -38,118 +38,83 @@ public class PlatoClient {
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(response, new TypeReference<List<PlatoResponseDTO>>() {});
+        return mapper.readValue(response, new TypeReference<List<PlatoResponseDTO>>() {
+        });
     }
 
     public PlatoResponseDTO crearPlato(PlatoRequestDTO platoDTO) throws Exception {
-        URL url = new URL(API_URL);
+        // Nueva URL: /api/v1/platos/{idRestaurante}/platos
+        URL url = new URL(API_URL + "/" + platoDTO.getIdRestaurante() + "/platos");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/json");
 
+        if (grupo.proyecto.Sesion.SessionManager.getAccessToken() != null) {
+            connection.setRequestProperty("Authorization", "Bearer " + grupo.proyecto.Sesion.SessionManager.getAccessToken());
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(platoDTO);
 
-        OutputStream os = connection.getOutputStream();
-        os.write(json.getBytes());
-        os.flush();
-        os.close();
-
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(connection.getInputStream())
-        );
-        StringBuilder response = new StringBuilder();
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
-        }
-        reader.close();
-
-        return mapper.readValue(response.toString(), PlatoResponseDTO.class);
-    }
-    public void eliminarPlato(Long id) throws Exception {
-
-        URL url =
-                new URL(
-                        API_URL + "/" + id
-                );
-
-        HttpURLConnection connection =
-                (HttpURLConnection)
-                        url.openConnection();
-
-        connection.setRequestMethod(
-                "DELETE"
-        );
-
-        int responseCode =
-                connection.getResponseCode();
-
-        if (responseCode != HttpURLConnection.HTTP_NO_CONTENT
-                && responseCode != HttpURLConnection.HTTP_OK) {
-
-            throw new RuntimeException(
-                    "Error eliminando plato. Código: "
-                            + responseCode
-            );
-        }
-    }
-    public PlatoResponseDTO modificarPlato(
-            Long id,
-            PlatoUpdateDTO dto
-    ) throws Exception {
-
-        URL url =
-                new URL(
-                        API_URL + "/" + id
-                );
-
-        HttpURLConnection connection =
-                (HttpURLConnection)
-                        url.openConnection();
-
-        connection.setRequestMethod("PUT");
-        connection.setDoOutput(true);
-
-        connection.setRequestProperty(
-                "Content-Type",
-                "application/json"
-        );
-
-        ObjectMapper mapper =
-                new ObjectMapper();
-
-        String json =
-                mapper.writeValueAsString(dto);
-
-        try (OutputStream os =
-                     connection.getOutputStream()) {
-
+        try (OutputStream os = connection.getOutputStream()) {
             os.write(json.getBytes());
         }
 
-        BufferedReader reader =
-                new BufferedReader(
-                        new InputStreamReader(
-                                connection.getInputStream()
-                        )
-                );
-
-        StringBuilder response =
-                new StringBuilder();
-
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-
-            response.append(line);
+        int status = connection.getResponseCode();
+        if (status >= 400) {
+            InputStream errorStream = connection.getErrorStream();
+            String errorBody = (errorStream != null) ? new String(errorStream.readAllBytes()) : "Sin detalle";
+            throw new RuntimeException("Error " + status + " del servidor:\n" + errorBody);
         }
 
-        return mapper.readValue(
-                response.toString(),
-                PlatoResponseDTO.class
-        );
+        return mapper.readValue(connection.getInputStream(), PlatoResponseDTO.class);
+    }
+
+    // A este método le sumamos el parámetro idRestaurante
+    public void eliminarPlato(Long platoId, Long idRestaurante) throws Exception {
+        // Nueva URL: /api/v1/platos/{idRestaurante}/platos/{platoId}
+        URL url = new URL(API_URL + "/" + idRestaurante + "/platos/" + platoId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+
+        if (grupo.proyecto.Sesion.SessionManager.getAccessToken() != null) {
+            connection.setRequestProperty("Authorization", "Bearer " + grupo.proyecto.Sesion.SessionManager.getAccessToken());
+        }
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode != HttpURLConnection.HTTP_NO_CONTENT && responseCode != HttpURLConnection.HTTP_OK) {
+            throw new RuntimeException("Error eliminando plato. Código: " + responseCode);
+        }
+    }
+
+    // A este método le sumamos el parámetro idRestaurante
+    public PlatoResponseDTO modificarPlato(Long platoId, Long idRestaurante, PlatoUpdateDTO dto) throws Exception {
+        // Nueva URL: /api/v1/platos/{idRestaurante}/platos/{platoId}
+        URL url = new URL(API_URL + "/" + idRestaurante + "/platos/" + platoId);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("PUT");
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        if (grupo.proyecto.Sesion.SessionManager.getAccessToken() != null) {
+            connection.setRequestProperty("Authorization", "Bearer " + grupo.proyecto.Sesion.SessionManager.getAccessToken());
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(dto);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            os.write(json.getBytes());
+        }
+
+        int status = connection.getResponseCode();
+        if (status >= 400) {
+            InputStream errorStream = connection.getErrorStream();
+            String errorBody = (errorStream != null) ? new String(errorStream.readAllBytes()) : "Sin detalle";
+            throw new RuntimeException("Error " + status + " del servidor:\n" + errorBody);
+        }
+
+        return mapper.readValue(connection.getInputStream(), PlatoResponseDTO.class);
     }
 }

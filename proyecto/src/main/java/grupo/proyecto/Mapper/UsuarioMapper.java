@@ -24,7 +24,15 @@ public interface UsuarioMapper {
 
     Usuario toEntity(ActualizarPreferenciasRequestDTO dto);
 
-    PreferenciasResponseDTO toPreferenciasDTO(List<Etiquetas> etiquetas);
+    // Usamos un método default para enseñarle a MapStruct cómo envolver la lista
+    default PreferenciasResponseDTO toPreferenciasDTO(List<Etiquetas> etiquetas) {
+        if (etiquetas == null) {
+            return null;
+        }
+        PreferenciasResponseDTO dto = new PreferenciasResponseDTO();
+        dto.setEtiquetas(etiquetas);
+        return dto;
+    }
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "preferencias", ignore = true)

@@ -2,6 +2,7 @@ package grupo.proyecto.UI.View.Restaurante;
 
 import grupo.proyecto.Models.dto.request.ReseñaRestauranteRequestDTO;
 import grupo.proyecto.Models.dto.response.RestauranteResponseDTO;
+import grupo.proyecto.Sesion.SessionManager;
 import grupo.proyecto.UI.View.LogIn_Registros.RestauranteBusquedaClient;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -128,7 +129,7 @@ public class RestaurantePerfilView {
                                     descripcion,
                                     calificacion,
                                     restaurante.getId(),
-                                    1L // usuario hardcodeado (luego lo cambiás por login)
+                                    SessionManager.getLoggedInId()
                             );
 
                     client.crearReseñaRestaurante(dto);

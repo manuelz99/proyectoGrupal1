@@ -5,6 +5,8 @@ import grupo.proyecto.Models.dto.request.PlatoUpdateDTO;
 import grupo.proyecto.Models.dto.response.PlatoResponseDTO;
 import grupo.proyecto.Service.PlatoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,12 @@ public class PlatoController { //Este controller ahora es obsoleto pero lo dejo 
     // CREAR
     // =========================
     @PostMapping("/{id}/platos")
-    @Operation(summary = "Agregar plato")
+    @Operation(summary = "Agregar plato", description = "Añade un nuevo plato al menú de un restaurante específico.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Plato creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+            @ApiResponse(responseCode = "401", description = "No autorizado (Falta token o no es el dueño)")
+    })
     @PreAuthorize("#id == authentication.principal.restaurante.id")
     public ResponseEntity<PlatoResponseDTO> crear(
             @PathVariable Long id,

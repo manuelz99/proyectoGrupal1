@@ -24,8 +24,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> manejarErrorGeneral(Exception ex) {
+        ex.printStackTrace();
 
-        ErrorResponseDTO response = new ErrorResponseDTO(LocalDateTime.now(), "Error interno del servidor");
+        // Temporalmente mandamos el mensaje real al Frontend también para verlo rápido
+        ErrorResponseDTO response = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                "Error interno: " + ex.getMessage()
+        );
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

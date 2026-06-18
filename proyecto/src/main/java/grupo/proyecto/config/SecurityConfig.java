@@ -68,11 +68,16 @@ public class SecurityConfig {
 
 
                         .requestMatchers(
-                                "/auth/**",
-                                "/api/v1/geocoding/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        ).permitAll() //estos endpoints no requieren autenticacion
+                                        "/auth/**",
+                                        "/api/v1/usuarios", "/api/v1/usuarios/**",
+                                        "/api/v1/restaurantes", "/api/v1/restaurantes/**",
+                                        "/api/v1/platos", "/api/v1/platos/**",
+                                        "/api/v1/reseñas-restaurantes", "/api/v1/reseñas-restaurantes/**",
+                                        "/api/v1/reseñas-platos", "/api/v1/reseñas-platos/**",
+                                        "/api/v1/geocoding", "/api/v1/geocoding/**",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
 
                         //Restricciones a restauranteController
 

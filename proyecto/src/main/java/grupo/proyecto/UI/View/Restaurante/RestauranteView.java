@@ -263,13 +263,14 @@ public class RestauranteView {
                 }
 
 
-                return new PlatoRequestDTO(
-                        idRestaurante,
-                        txtNombre.getText(),
-                        txtDescripcion.getText(),
-                        precio,
-                        etiquetas
-                );
+                PlatoRequestDTO dto = new PlatoRequestDTO();
+                dto.setIdRestaurante(idRestaurante);
+                dto.setNombre(txtNombre.getText());
+                dto.setDescripcion(txtDescripcion.getText());
+                dto.setPrecio(precio);
+                dto.setEtiquetas(etiquetas);
+
+                return dto;
             }
 
             return null;
@@ -289,9 +290,7 @@ public class RestauranteView {
                 listaPlatos.getItems().add(creado);
 
             } catch (Exception e) {
-
-                mostrarError("Error creando plato");
-
+                mostrarError("Error creando plato:\n" + e.getMessage());
                 e.printStackTrace();
             }
         });
@@ -425,7 +424,11 @@ public class RestauranteView {
                 PlatoClient client =
                         new PlatoClient();
 
-                client.modificarPlato(plato.getId(), dto);
+                client.modificarPlato(
+                        plato.getId(),
+                        idRestaurante,
+                        dto
+                );
 
                 cargarPlatos();
 
@@ -489,7 +492,10 @@ public class RestauranteView {
             PlatoClient client =
                     new PlatoClient();
 
-            client.eliminarPlato(plato.getId());
+            client.eliminarPlato(
+                    plato.getId(),
+                    idRestaurante
+            );
 
             cargarPlatos();
 

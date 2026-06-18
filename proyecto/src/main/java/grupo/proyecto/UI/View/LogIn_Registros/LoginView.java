@@ -54,27 +54,23 @@ public class LoginView {
             }
 
             try {
-
-                // 🔐 LOGIN CENTRALIZADO CON JWT
+                // LOGIN CENTRALIZADO CON JWT
                 String token = ApiClient.login(email, password);
 
-                System.out.println("TOKEN OBTENIDO: " + token);
+                // OBTENEMOS EL ID REAL DE LA BD
+                Long realId = ApiClient.fetchLoggedInId();
 
-                // 🧭 REDIRECCIÓN SEGÚN TIPO DE PANTALLA
                 if (esRestaurante) {
-
                     RestauranteView restauranteView =
-                            new RestauranteView(stage, 1L); // luego lo reemplazamos con ID real
-
+                            new RestauranteView(stage, realId); // ¡Chau 1L! Usamos realId
                     stage.setScene(new Scene(restauranteView.getView(), 900, 600));
 
                 } else {
-
                     UsuarioView usuarioView =
-                            new UsuarioView(stage);
-
+                            new UsuarioView(stage); // Al usuario también se lo podrías pasar si lo necesitás luego
                     stage.setScene(new Scene(usuarioView.getView(), 900, 600));
                 }
+// ...
 
             } catch (Exception ex) {
 
