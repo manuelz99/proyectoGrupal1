@@ -24,12 +24,6 @@ public class RestauranteController {
     private final RestauranteService service;
     private final PlatoService platoService;
 
-    @PostMapping
-    public ResponseEntity<RestauranteResponseDTO> crear(@Valid @RequestBody RestauranteRequestDTO dto) {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.crearRestaurante(dto));
-    }
-
     @GetMapping
     public ResponseEntity<List<RestauranteResponseDTO>> listar(@RequestParam(required = false) String nombre,
                                                                @RequestParam(required = false) String direccion) {

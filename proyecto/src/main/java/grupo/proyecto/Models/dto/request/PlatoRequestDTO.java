@@ -18,10 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class PlatoRequestDTO {
 
-        @NotNull(message = "El ID del restaurante no puede ser nulo")
-        @Positive(message = "El ID del restaurant debe ser positivo")
-        private Long idRestaurante;
-
         @NotBlank(message = "El nombre del plato no puede estar vacio")
         private String nombre;
 

@@ -30,9 +30,9 @@ public class PlatoService {
     // CREAR PLATO
     // =========================
     @Transactional
-    public PlatoResponseDTO crearPlato(PlatoRequestDTO dto, Long id) {
+    public PlatoResponseDTO crearPlato(PlatoRequestDTO dto, Long restoId) {
 
-        Restaurante restaurante = validarRestaurante(id);
+        Restaurante restaurante = validarRestaurante(restoId);
 
         Plato plato = platoMapper.toEntity(dto);
 

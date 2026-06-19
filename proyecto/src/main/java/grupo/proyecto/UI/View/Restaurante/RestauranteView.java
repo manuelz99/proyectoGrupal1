@@ -264,7 +264,7 @@ public class RestauranteView {
 
 
                 PlatoRequestDTO dto = new PlatoRequestDTO();
-                dto.setIdRestaurante(idRestaurante);
+                //dto.setIdRestaurante(idRestaurante);
                 dto.setNombre(txtNombre.getText());
                 dto.setDescripcion(txtDescripcion.getText());
                 dto.setPrecio(precio);

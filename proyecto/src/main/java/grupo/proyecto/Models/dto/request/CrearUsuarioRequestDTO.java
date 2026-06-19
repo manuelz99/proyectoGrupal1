@@ -24,9 +24,5 @@ public class CrearUsuarioRequestDTO {
 
     @Size(min = 6, message = "La contrasenia no puede ser menor a 6 caracteres")
     @NotBlank(message = "La contrasenia no puede ser nula")
-    private String contrasenia;
-
-    @NotBlank(message = "La direccion no puede ser nula")
-    private String direccion; //Esto seguramente se eliminara ya que se usara la api
-                              //externa para obtener la direccion
+    private String password;
 }

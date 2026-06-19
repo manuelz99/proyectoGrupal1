@@ -13,4 +13,5 @@ public class UsuarioResponseDTO {
     private String nombre;
 
     private String email;
+    private String accessToken;
 }

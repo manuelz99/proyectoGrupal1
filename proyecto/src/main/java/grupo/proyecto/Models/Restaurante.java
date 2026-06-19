@@ -40,7 +40,6 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReseñaRestaurant> reseñas;
 
-
     @ElementCollection(targetClass = Etiquetas.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(
@@ -52,8 +51,4 @@ public class Restaurante {
 
     @Column(nullable = false, unique = true)
     private String email;
-
-
-    @Column(nullable = false)
-    private String password;
 }

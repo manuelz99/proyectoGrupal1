@@ -1,8 +1,10 @@
 package grupo.proyecto.Controller;
 
 import grupo.proyecto.Models.CredentialsEntity;
+import grupo.proyecto.Models.dto.request.CrearUsuarioRequestDTO;
 import grupo.proyecto.Models.dto.request.LoginRequestDTO;
 import grupo.proyecto.Models.dto.request.RegisterRequestDTO;
+import grupo.proyecto.Models.dto.request.RestauranteRequestDTO;
 import grupo.proyecto.Models.dto.response.AuthResponseDTO;
 import grupo.proyecto.Service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,11 +28,18 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register/usuario")
     @Operation(summary = "Registrar nuevo usuario",
             description = "Crea un nuevo usuario con rol USER y devuelve los tokens")
-    public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<AuthResponseDTO> registerUser(@Valid @RequestBody CrearUsuarioRequestDTO request) {
+        return ResponseEntity.ok(authService.registerUser(request));
+    }
+
+    @PostMapping("/register/restaurante")
+    @Operation(summary = "Registrar nuevo usuario",
+            description = "Crea un nuevo usuario con rol USER y devuelve los tokens")
+    public ResponseEntity<AuthResponseDTO> registerRestaurante(@Valid @RequestBody RestauranteRequestDTO request) {
+        return ResponseEntity.ok(authService.registerRestaurante(request));
     }
 
     @PostMapping("/login")

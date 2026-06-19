@@ -27,15 +27,12 @@ public class RestauranteService {
     private final RestauranteRepository repository;
     private final RestauranteMapper mapper;
     private final GeocodingService geocodingService;
-    private final CredentialsRepository credentialsRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
 
     // =========================
     // CREAR
     // =========================
     @Transactional
-    public RestauranteResponseDTO crearRestaurante(RestauranteRequestDTO dto) {
+    public Restaurante crearRestaurante(RestauranteRequestDTO dto) {
 
         Restaurante restaurante = mapper.toEntity(dto);
 
@@ -43,24 +40,11 @@ public class RestauranteService {
         restaurante.setLatitud(coordenadas[0]);
         restaurante.setLongitud(coordenadas[1]);
 
-        restaurante.setPassword(passwordEncoder.encode(dto.getPassword()));
+        return repository.save(restaurante);
+    }
 
-        Restaurante saved = repository.save(restaurante);
-
-        // 2. Crear las credenciales para Spring Security
-        CredentialsEntity credentials = new CredentialsEntity();
-        credentials.setEmail(dto.getEmail());
-        credentials.setPassword(restaurante.getPassword());
-        credentials.setRestaurante(saved);
-
-        // 3. Asignar el rol
-        RoleEntity roleResto = roleRepository.findByRole(Roles.ROLE_RESTAURANTE)
-                .orElseThrow(() -> new RuntimeException("ROLE_RESTAURANTE no existe"));
-
-        credentials.addRole(roleResto);
-        credentialsRepository.save(credentials);
-
-        return mapper.toDTO(saved);
+    public RestauranteResponseDTO restauranteADto(Restaurante r){
+        return mapper.toDTO(r);
     }
 
     // =========================

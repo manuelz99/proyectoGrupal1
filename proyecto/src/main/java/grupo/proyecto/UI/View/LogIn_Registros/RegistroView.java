@@ -99,8 +99,7 @@ public class RegistroView {
                     CrearUsuarioRequestDTO dto = new CrearUsuarioRequestDTO();
                     dto.setNombre(nombre);
                     dto.setEmail(email);
-                    dto.setContrasenia(password);
-                    dto.setDireccion("sin direccion");
+                    dto.setPassword(password);
 
                     new UsuarioClient().registrar(dto);
 

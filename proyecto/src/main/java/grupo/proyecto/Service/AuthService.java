@@ -2,8 +2,12 @@ package grupo.proyecto.Service;
 
 import grupo.proyecto.Enums.Roles;
 import grupo.proyecto.Models.CredentialsEntity;
+import grupo.proyecto.Models.Restaurante;
 import grupo.proyecto.Models.RoleEntity;
+import grupo.proyecto.Models.Usuario;
+import grupo.proyecto.Models.dto.request.CrearUsuarioRequestDTO;
 import grupo.proyecto.Models.dto.request.RegisterRequestDTO;
+import grupo.proyecto.Models.dto.request.RestauranteRequestDTO;
 import grupo.proyecto.Models.dto.response.AuthResponseDTO;
 import grupo.proyecto.Repositorys.CredentialsRepository;
 import grupo.proyecto.Repositorys.RoleRepository;
@@ -21,17 +25,23 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final RestauranteService restauranteService;
+    private final UsuarioService usuarioService;
 
     public AuthService(CredentialsRepository credentialsRepository,
                        RoleRepository roleRepository,
                        AuthenticationManager authenticationManager,
                        JwtService jwtService,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       RestauranteService restauranteService,
+                       UsuarioService usuarioService) {
         this.credentialsRepository = credentialsRepository;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.restauranteService = restauranteService;
+        this.usuarioService = usuarioService;
     }
 
     // ── Login ─────────────────────────────────────────────────────────────────
@@ -53,22 +63,49 @@ public class AuthService {
     // ── Registro ──────────────────────────────────────────────────────────────
 
     @Transactional
-    public AuthResponseDTO register(RegisterRequestDTO input) {
+    public AuthResponseDTO registerUser(CrearUsuarioRequestDTO input) {
         if (credentialsRepository.existsByEmail(input.getEmail())) {
             throw new IllegalArgumentException("El email ya está registrado");
         }
 
-        CredentialsEntity credentials = new CredentialsEntity(
-                input.getEmail(),
-                passwordEncoder.encode(input.getPassword())
-        );
+        Usuario saved = usuarioService.crearUsuario(input);
 
-        // Asignamos rol USER por defecto
-        RoleEntity userRole = roleRepository.findByRole(Roles.ROLE_USER)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Rol ROLE_USER no encontrado. Ejecutá el DataInitializer."));
-        credentials.addRole(userRole);
+        //Crear las credenciales para Spring Security
+        CredentialsEntity credentials = new CredentialsEntity();
+        credentials.setEmail(input.getEmail());
+        credentials.setPassword(passwordEncoder.encode(input.getPassword()));
+        credentials.setUsuario(saved);
 
+        //Asignar el rol
+        RoleEntity roleUser = roleRepository.findByRole(Roles.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("ROLE_USER no existe"));
+
+        credentials.addRole(roleUser);
+        credentialsRepository.save(credentials);
+
+        String accessToken = jwtService.generateToken(credentials);
+        return new AuthResponseDTO(accessToken);
+    }
+
+    @Transactional
+    public AuthResponseDTO registerRestaurante(RestauranteRequestDTO input) {
+        if (credentialsRepository.existsByEmail(input.getEmail())) {
+            throw new IllegalArgumentException("El email ya está registrado");
+        }
+
+        Restaurante saved = restauranteService.crearRestaurante(input);
+
+        //Crear las credenciales para Spring Security
+        CredentialsEntity credentials = new CredentialsEntity();
+        credentials.setEmail(input.getEmail());
+        credentials.setPassword(passwordEncoder.encode(input.getPassword()));
+        credentials.setRestaurante(saved);
+
+        //Asignar el rol
+        RoleEntity roleResto = roleRepository.findByRole(Roles.ROLE_RESTAURANTE)
+                .orElseThrow(() -> new RuntimeException("ROLE_RESTAURANTE no existe"));
+
+        credentials.addRole(roleResto);
         credentialsRepository.save(credentials);
 
         String accessToken = jwtService.generateToken(credentials);

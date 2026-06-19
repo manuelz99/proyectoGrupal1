@@ -27,16 +27,10 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String contrasenia;
-
-    @Column(nullable = false)
-    private String direccion;
-
     @ElementCollection(targetClass = Etiquetas.class)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private List<Etiquetas> preferencias;
+    private List<Etiquetas> preferencias; //ESTO TIENE QUE SER SET
 
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore

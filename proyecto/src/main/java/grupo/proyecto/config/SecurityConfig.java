@@ -69,12 +69,7 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                         "/auth/**",
-                                        "/api/v1/usuarios", "/api/v1/usuarios/**",
-                                        "/api/v1/restaurantes", "/api/v1/restaurantes/**",
-                                        "/api/v1/platos", "/api/v1/platos/**",
-                                        "/api/v1/reseñas-restaurantes", "/api/v1/reseñas-restaurantes/**",
-                                        "/api/v1/reseñas-platos", "/api/v1/reseñas-platos/**",
-                                        "/api/v1/geocoding", "/api/v1/geocoding/**",
+                                        "/api/v1/geocoding/**",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**"
                                 ).permitAll()
@@ -90,24 +85,25 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/v1/restaurantes/**")
                         .hasAnyAuthority("ROLE_ADMIN", "ROLE_RESTAURANTE")
 
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/restaurantes/platos/{id}")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/restaurantes/*/platos/*")
                         .hasAnyAuthority("ROLE_ADMIN", "ROLE_RESTAURANTE")
 
-                        .requestMatchers(HttpMethod.POST, "/api/v1/restaurantes/{id}/platos")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/restaurantes/*/platos")
                         .hasAnyAuthority("ROLE_ADMIN", "ROLE_RESTAURANTE")
 
-                        //falta restringir endpoints de "/cercanos" y "crear", porque no se que aplicar
+                        .requestMatchers(HttpMethod.POST, "/api/v1/restaurantes/cercanos")
+                        .authenticated()
 
                         //Restricciones a usuarioController
 
                         .requestMatchers(
-                                "/api/v1/usuarios/{id}", "/api/v1/usuarios/email/{email}")
+                                "/api/v1/usuarios/*", "/api/v1/usuarios/email/*")
                         .hasAuthority("ROLE_ADMIN")
 
-                        .requestMatchers("/api/v1/usuarios/{id}/preferencias/**")
+                        .requestMatchers("/api/v1/usuarios/*/preferencias/**")
                         .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
 
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/usuarios/{id}")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/usuarios/*")
                         .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
 
                         //Restricciones a Reseñas

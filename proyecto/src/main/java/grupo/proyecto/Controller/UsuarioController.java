@@ -85,6 +85,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarPreferencias(id));
     }
 
+    /* //endpoint temporalmente deshabilitado
     @PutMapping("/{id}")
     @PreAuthorize("#id == authentication.principal.usuario.id")
     @Operation(summary = "Actualizar perfil", description = "Modifica los datos personales (nombre, dirección, etc.) del usuario logueado.")
@@ -98,5 +99,5 @@ public class UsuarioController {
             @Valid @RequestBody CrearUsuarioRequestDTO dto,
             @PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.actualizarPerfil(dto, id));
-    }
+    }*/
 }

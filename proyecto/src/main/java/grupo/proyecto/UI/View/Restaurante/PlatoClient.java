@@ -44,7 +44,7 @@ public class PlatoClient {
 
     public PlatoResponseDTO crearPlato(PlatoRequestDTO platoDTO) throws Exception {
         // Nueva URL: /api/v1/platos/{idRestaurante}/platos
-        URL url = new URL(API_URL + "/" + platoDTO.getIdRestaurante() + "/platos");
+        URL url = new URL(API_URL + "/" + /*platoDTO.getIdRestaurante()*/0 + "/platos"); //reemplazada id por un 0 para que compile
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
