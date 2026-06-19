@@ -1,5 +1,6 @@
 package grupo.proyecto.Controller;
 
+import grupo.proyecto.Models.Plato;
 import grupo.proyecto.Models.dto.request.*;
 import grupo.proyecto.Models.dto.response.PlatoResponseDTO;
 import grupo.proyecto.Models.dto.response.RestauranteResponseDTO;
@@ -142,5 +143,12 @@ public class RestauranteController {
 
         platoService.eliminar_plato(id, platoId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/platos/buscar")
+    @Operation(summary = "Lisar platos por nombre de Restaurante")
+    public ResponseEntity<List<PlatoResponseDTO>> listarPlatosPorNombreDeRestaurante(
+            @RequestParam String nombre){
+        return ResponseEntity.ok(platoService.listarPlatosPorNombreDeRestaurante(nombre));
     }
 }

@@ -170,4 +170,12 @@ public class PlatoService {
                 .orElseThrow(() ->
                         new RecursoNotFoundException("Plato no encontrado con ID: " + id));
     }
+
+    public List<PlatoResponseDTO> listarPlatosPorNombreDeRestaurante(String resto){
+        Restaurante restaurante = restauranteRepository.findByNombre(resto)
+                .orElseThrow(() ->
+                      new RecursoNotFoundException("Restaurante no encontrado"));
+
+        return listarPorRestaurante(restaurante.getId());
+    }
 }

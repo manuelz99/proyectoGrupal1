@@ -79,9 +79,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/restaurantes/**")
                         .permitAll() //estos endpoints no requieren autenticacion
 
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/restaurantes/**")
-                        .hasAuthority("ROLE_ADMIN")
-
                         .requestMatchers(HttpMethod.PUT, "/api/v1/restaurantes/**")
                         .hasAnyAuthority("ROLE_ADMIN", "ROLE_RESTAURANTE")
 
